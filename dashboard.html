@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - SPS</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="icon" type="image/png" href="images/sensor-icon.png">
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="home.html" class="navbar-brand">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/>
+        </svg>
+        <span>SPS</span>
+      </a>
+      <ul class="navbar-nav">
+        <li><a href="home.html" class="nav-link">Home</a></li>
+        <li><a href="blueprint.html" class="nav-link">Blueprint</a></li>
+        <li><a href="alerts.html" class="nav-link">Alerts</a></li>
+        <li><a href="dashboard.html" class="nav-link active">Dashboard</a></li>
+      </ul>
+    </div>
+  </nav>
+  
+  <!-- Main Content -->
+  <main class="container py-6">
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="page-header-left">
+        <a href="blueprint.html" class="btn btn-icon btn-outline">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M19 12H5M12 19l-7-7 7-7"/>
+          </svg>
+        </a>
+        <div>
+          <h1 class="page-title">System Dashboard</h1>
+          <p class="page-description">AI-powered network monitoring & predictions</p>
+        </div>
+      </div>
+      <div class="page-actions">
+        <button class="btn btn-outline" onclick="refreshDashboard()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M23 4v6h-6M1 20v-6h6"/>
+            <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
+          </svg>
+          Refresh
+        </button>
+      </div>
+    </div>
+    
+    <!-- Stats Grid -->
+    <div class="stats-grid" id="statsGrid">
+      <!-- Stats will be rendered by JavaScript -->
+    </div>
+    
+    <!-- Charts Row -->
+    <div class="grid-2 mb-4">
+      <!-- Leak Frequency Chart -->
+      <div class="chart-container">
+        <div class="chart-title">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+          </svg>
+          Leak Frequency (7 Days)
+        </div>
+        <div class="bar-chart" id="leakChart">
+          <!-- Chart will be rendered by JavaScript -->
+        </div>
+      </div>
+      
+      <!-- AI Risk Predictions -->
+      <div class="chart-container">
+        <div class="chart-title">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+          </svg>
+          AI Risk Predictions
+        </div>
+        <div id="riskPredictions" style="padding: 1rem 0;">
+          <!-- Risk predictions will be rendered by JavaScript -->
+        </div>
+      </div>
+    </div>
+    
+    <!-- Info Cards Row -->
+    <div class="grid-2">
+      <!-- System Information -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title" style="display: flex; align-items: center; gap: 0.5rem;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"/>
+              <polyline points="12 6 12 12 16 14"/>
+            </svg>
+            System Information
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="info-list">
+            <div class="info-item">
+              <span class="info-label">Version</span>
+              <span class="info-value">SPS v2.0.0 (AI Enhanced)</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Active Sensors</span>
+              <span class="info-value" id="activeSensorsCount">0</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Network Uptime</span>
+              <span class="info-value">99.98%</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Last Scan</span>
+              <span class="info-value" id="lastScan">Just now</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- AI Capabilities -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title" style="display: flex; align-items: center; gap: 0.5rem;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+            </svg>
+            AI Capabilities
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="feature-list">
+            <div class="feature-item">
+              <div class="feature-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                  <polyline points="22 4 12 14.01 9 11.01"/>
+                </svg>
+              </div>
+              <div class="feature-content">
+                <h4>Smart Monitoring</h4>
+                <p>Reduces false alerts by 85%</p>
+              </div>
+            </div>
+            <div class="feature-item">
+              <div class="feature-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+                </svg>
+              </div>
+              <div class="feature-content">
+                <h4>Pattern Learning</h4>
+                <p>Learns normal flow patterns</p>
+              </div>
+            </div>
+            <div class="feature-item">
+              <div class="feature-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                </svg>
+              </div>
+              <div class="feature-content">
+                <h4>Leak Classification</h4>
+                <p>Identifies leak type & severity</p>
+              </div>
+            </div>
+            <div class="feature-item">
+              <div class="feature-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"/>
+                  <polyline points="12 6 12 12 16 14"/>
+                </svg>
+              </div>
+              <div class="feature-content">
+                <h4>Predictive Analysis</h4>
+                <p>Forecasts potential issues</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  
+  <script src="js/app.js"></script>
+  <script>
+    function refreshDashboard() {
+      SPS.loadData();
+      renderDashboard();
+      SPS.showToast("Dashboard refreshed!", "success");
+    }
+    
+    function renderDashboard() {
+      const stats = SPS.getDashboardStats();
+      
+      // Render stats grid
+      const statsGrid = document.getElementById("statsGrid");
+      statsGrid.innerHTML = `
+        <div class="stat-card">
+          <div class="stat-icon blue">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"/>
+              <circle cx="12" cy="12" r="3"/>
+            </svg>
+          </div>
+          <div class="stat-content">
+            <h3>Total Sensors</h3>
+            <div class="value">${stats.totalSensors}</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon red">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+              <line x1="12" y1="9" x2="12" y2="13"/>
+              <line x1="12" y1="17" x2="12.01" y2="17"/>
+            </svg>
+          </div>
+          <div class="stat-content">
+            <h3>Leaks Today</h3>
+            <div class="value">${stats.alertsToday}</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon yellow">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+            </svg>
+          </div>
+          <div class="stat-content">
+            <h3>Warnings</h3>
+            <div class="value">${stats.warningSensors}</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon green">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+            </svg>
+          </div>
+          <div class="stat-content">
+            <h3>System Health</h3>
+            <div class="value">${stats.healthPercentage}%</div>
+          </div>
+        </div>
+      `;
+      
+      // Update active sensors count
+      document.getElementById("activeSensorsCount").textContent = stats.activeSensors;
+      
+      // Render leak chart
+      SPS.renderLeakChart(document.getElementById("leakChart"));
+      
+      // Render risk predictions
+      renderRiskPredictions();
+    }
+    
+    function renderRiskPredictions() {
+      const container = document.getElementById("riskPredictions");
+      const sensors = SPS.data.sensors;
+      
+      if (sensors.length === 0) {
+        container.innerHTML = '<p class="text-muted">No sensors available.</p>';
+        return;
+      }
+      
+      // Generate mock risk scores
+      const riskData = sensors.map(sensor => ({
+        ...sensor,
+        riskScore: sensor.status === "leak" ? 85 : 
+                   sensor.status === "warning" ? 45 : 
+                   Math.floor(Math.random() * 30) + 5
+      }));
+      
+      container.innerHTML = riskData.map(sensor => `
+        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.75rem;">
+          <div style="flex: 1;">
+            <div style="font-size: 0.875rem; font-weight: 500; margin-bottom: 0.25rem;">${sensor.name}</div>
+            <div style="height: 8px; background: #e2e8f0; border-radius: 4px; overflow: hidden;">
+              <div style="height: 100%; width: ${sensor.riskScore}%; background: ${sensor.riskScore > 60 ? '#ef4444' : sensor.riskScore > 30 ? '#f59e0b' : '#10b981'}; border-radius: 4px; transition: width 0.5s ease;"></div>
+            </div>
+          </div>
+          <div style="font-size: 0.875rem; font-weight: 600; color: ${sensor.riskScore > 60 ? '#ef4444' : sensor.riskScore > 30 ? '#f59e0b' : '#10b981'};">
+            ${sensor.riskScore}%
+          </div>
+        </div>
+      `).join('');
+    }
+    
+    document.addEventListener("DOMContentLoaded", renderDashboard);
+  </script>
+</body>
+</html>

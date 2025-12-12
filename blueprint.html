@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blueprint - SPS</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="icon" type="image/png" href="images/sensor-icon.png">
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="home.html" class="navbar-brand">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/>
+        </svg>
+        <span>SPS</span>
+      </a>
+      <ul class="navbar-nav">
+        <li><a href="home.html" class="nav-link">Home</a></li>
+        <li><a href="blueprint.html" class="nav-link active">Blueprint</a></li>
+        <li><a href="alerts.html" class="nav-link">Alerts</a></li>
+        <li><a href="dashboard.html" class="nav-link">Dashboard</a></li>
+      </ul>
+    </div>
+  </nav>
+  
+  <!-- Main Content -->
+  <main class="container py-6">
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="page-header-left">
+        <a href="home.html" class="btn btn-icon btn-outline">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M19 12H5M12 19l-7-7 7-7"/>
+          </svg>
+        </a>
+        <div>
+          <h1 class="page-title">Building Blueprint</h1>
+          <p class="page-description">Interactive sensor map with AI monitoring</p>
+        </div>
+      </div>
+      <div class="page-actions">
+        <label class="btn btn-outline" style="cursor: pointer;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="17 8 12 3 7 8"/>
+            <line x1="12" y1="3" x2="12" y2="15"/>
+          </svg>
+          Upload Blueprint
+          <input type="file" accept="image/*" style="display: none;" onchange="SPS.handleBlueprintUpload(this)">
+        </label>
+        <button class="btn btn-outline" onclick="handleReset()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M23 4v6h-6M1 20v-6h6"/>
+            <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
+          </svg>
+          Reset System
+        </button>
+        <button class="btn btn-primary" onclick="openSimulateModal()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/>
+          </svg>
+          Simulate Leak
+        </button>
+        <a href="alerts.html" class="btn btn-outline">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+            <polyline points="22,6 12,13 2,6"/>
+          </svg>
+          View Alerts
+        </a>
+      </div>
+    </div>
+    
+    <!-- Blueprint Container -->
+    <div class="blueprint-container" id="blueprintContainer">
+      <img src="images/blueprint-bg.png" alt="Building Blueprint" class="blueprint-image" id="blueprintImage">
+      <!-- Sensor points will be rendered by JavaScript -->
+    </div>
+    
+    <!-- Legend -->
+    <div class="legend">
+      <div class="legend-item">
+        <div class="legend-dot active"></div>
+        <span>Active Sensor</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot warning"></div>
+        <span>Warning</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot leak"></div>
+        <span>Leak Detected</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot offline"></div>
+        <span>Offline</span>
+      </div>
+    </div>
+  </main>
+  
+  <!-- Simulate Leak Modal -->
+  <div class="modal-overlay" id="simulateModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 class="modal-title">Simulate Leak Event</h2>
+        <button class="modal-close" onclick="SPS.closeModal('simulateModal')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p class="text-muted mb-3">Choose a sensor to trigger a leak alert or simulate a random event. The AI system will analyze the leak and classify its severity.</p>
+        
+        <div class="sensor-list" id="sensorList">
+          <!-- Sensor options will be rendered by JavaScript -->
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" onclick="SPS.closeModal('simulateModal')">Cancel</button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Alert Popup Modal -->
+  <div class="modal-overlay" id="alertModal">
+    <div class="modal">
+      <div class="modal-header" style="background: #fef2f2; border-bottom-color: #fecaca;">
+        <h2 class="modal-title" style="color: #dc2626;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: inline-block; vertical-align: middle; margin-right: 0.5rem;">
+            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+            <line x1="12" y1="9" x2="12" y2="13"/>
+            <line x1="12" y1="17" x2="12.01" y2="17"/>
+          </svg>
+          Leak Detected!
+        </h2>
+        <button class="modal-close" onclick="SPS.closeModal('alertModal')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div id="alertDetails">
+          <!-- Alert details will be rendered by JavaScript -->
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" onclick="SPS.closeModal('alertModal')">Dismiss</button>
+        <a href="alerts.html" class="btn btn-primary">View All Alerts</a>
+      </div>
+    </div>
+  </div>
+  
+  <script src="js/app.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const container = document.getElementById("blueprintContainer");
+      const blueprintImage = document.getElementById("blueprintImage");
+      
+      // Set blueprint image from data
+      if (SPS.data.blueprintImage) {
+        blueprintImage.src = SPS.data.blueprintImage;
+      }
+      
+      // Render sensors
+      SPS.renderSensors(container);
+      
+      // Render sensor list in modal
+      renderSensorOptions();
+    });
+    
+    function openSimulateModal() {
+      renderSensorOptions();
+      SPS.openModal("simulateModal");
+    }
+    
+    function renderSensorOptions() {
+      const container = document.getElementById("sensorList");
+      container.innerHTML = "";
+      
+      // Random option
+      const randomOption = document.createElement("div");
+      randomOption.className = "sensor-option";
+      randomOption.innerHTML = `
+        <div class="dot" style="background: linear-gradient(135deg, #0ea5e9 0%, #ef4444 100%);"></div>
+        <div>
+          <strong>Random Sensor Leak</strong>
+          <p class="text-muted" style="font-size: 0.75rem; margin: 0;">Simulate a leak on a random active sensor</p>
+        </div>
+      `;
+      randomOption.onclick = () => simulateLeakOnSensor(null);
+      container.appendChild(randomOption);
+      
+      // Individual sensors
+      SPS.data.sensors.forEach(sensor => {
+        const option = document.createElement("div");
+        option.className = "sensor-option";
+        option.innerHTML = `
+          <div class="dot ${sensor.status === 'leak' ? 'leak' : ''}"></div>
+          <div>
+            <strong>${sensor.name} - ${sensor.location}</strong>
+            <p class="text-muted" style="font-size: 0.75rem; margin: 0;">${sensor.description} | Status: ${sensor.status}</p>
+          </div>
+        `;
+        option.onclick = () => simulateLeakOnSensor(sensor.id);
+        container.appendChild(option);
+      });
+    }
+    
+    function simulateLeakOnSensor(sensorId) {
+      SPS.closeModal("simulateModal");
+      
+      const alert = SPS.simulateLeak(sensorId);
+      if (alert) {
+        // Show alert popup
+        const detailsContainer = document.getElementById("alertDetails");
+        const sensor = SPS.data.sensors.find(s => s.id === alert.sensorId);
+        
+        detailsContainer.innerHTML = `
+          <div style="text-align: center; padding: 1rem;">
+            <div style="width: 80px; height: 80px; background: #fef2f2; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem;">
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="2">
+                <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/>
+              </svg>
+            </div>
+            <h3 style="font-size: 1.25rem; margin-bottom: 0.5rem;">${alert.message}</h3>
+            <p class="text-muted">Location: <strong>${alert.location}</strong></p>
+            <div style="margin-top: 1rem; padding: 1rem; background: #f8fafc; border-radius: 0.5rem;">
+              <p style="font-size: 0.875rem; color: #64748b;">
+                <strong>Sensor:</strong> ${sensor ? sensor.name : 'Unknown'}<br>
+                <strong>Type:</strong> ${sensor ? sensor.description : 'N/A'}<br>
+                <strong>Time:</strong> ${new Date(alert.timestamp).toLocaleString()}
+              </p>
+            </div>
+          </div>
+        `;
+        
+        SPS.openModal("alertModal");
+        
+        // Re-render sensors to show leak
+        const container = document.getElementById("blueprintContainer");
+        SPS.renderSensors(container);
+      }
+    }
+    
+    function handleReset() {
+      SPS.resetSystem();
+      const container = document.getElementById("blueprintContainer");
+      SPS.renderSensors(container);
+    }
+  </script>
+</body>
+</html>
