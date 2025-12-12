@@ -1,62 +1,24 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SPS - Smart Plumbing System</title>
-  <link rel="stylesheet" href="css/styles.css">
-  <link rel="icon" type="image/png" href="images/sensor-icon.png">
-</head>
-<body>
-  <div class="splash-page">
-    <div class="splash-bg"></div>
-    <div class="splash-content">
-      <!-- Logo -->
-      <div style="margin-bottom: 1rem;">
-        <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#0ea5e9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/>
-        </svg>
-      </div>
-      
-      <!-- Title -->
-      <h1 class="splash-title">SPS</h1>
-      <p class="splash-subtitle">Smart Plumbing System</p>
-      
-      <!-- Login Button -->
-      <a href="login.html" class="btn btn-primary" style="padding: 1rem 3rem; font-size: 1.125rem;">
-        Login
-      </a>
-      
-      <!-- Features -->
-      <div style="margin-top: 3rem; display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap;">
-        <div style="text-align: center;">
-          <div style="width: 48px; height: 48px; background: rgba(14, 165, 233, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 0.5rem;">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0ea5e9" stroke-width="2">
-              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-            </svg>
-          </div>
-          <p style="font-size: 0.875rem; color: #64748b;">IoT Sensors</p>
-        </div>
-        <div style="text-align: center;">
-          <div style="width: 48px; height: 48px; background: rgba(14, 165, 233, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 0.5rem;">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0ea5e9" stroke-width="2">
-              <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
-            </svg>
-          </div>
-          <p style="font-size: 0.875rem; color: #64748b;">AI Detection</p>
-        </div>
-        <div style="text-align: center;">
-          <div style="width: 48px; height: 48px; background: rgba(14, 165, 233, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 0.5rem;">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0ea5e9" stroke-width="2">
-              <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
-            </svg>
-          </div>
-          <p style="font-size: 0.875rem; color: #64748b;">Real-time Alerts</p>
-        </div>
-      </div>
-    </div>
-  </div>
-  
-  <script src="js/app.js"></script>
-</body>
+
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+    <title>SPS - Smart Plumbing System</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;500;700&family=Outfit:wght@400;500;700&display=swap" rel="stylesheet" />
+  </head>
+
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+    <script
+      defer
+      src="%VITE_ANALYTICS_ENDPOINT%/umami"
+      data-website-id="%VITE_ANALYTICS_WEBSITE_ID%"></script>
+  </body>
+
 </html>
